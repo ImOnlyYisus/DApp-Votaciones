@@ -1,0 +1,3 @@
+~~~
+npm truffle install -g
+~~~
