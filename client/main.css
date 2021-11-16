@@ -1,0 +1,14 @@
+:root {
+    --azul-morado: #363D91;
+    --azul: #3C4CFA;
+    --dorado: #b5af69;
+}
+
+body {
+    background-color: var(--azul-morado);
+    color: white;
+}
+
+.material-icons {
+    color: black;
+}
