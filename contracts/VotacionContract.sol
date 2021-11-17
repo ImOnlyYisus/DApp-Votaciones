@@ -4,7 +4,6 @@ pragma solidity ^0.8.6;
 contract VotacionContract{
 
     uint256 public contadorParticipantes = 0;
-    uint256 public contadorDirecciones = 0;
 
     //Creo un puestos por defecto
     constructor(){
