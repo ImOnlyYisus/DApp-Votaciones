@@ -15,20 +15,23 @@
 <body>
     <div class="container py-5">
         <div class="row">
-            <div class="col-3">
-                <div class="card card-body mb-4 bg-dark">
-                    <h1 class="h3">DApp VOTACIONES</h1>
-                    <h6 class="text-muted">Decentralized Task App</h6>
-
-                    <span>Wallet</span>
-                    <span>12312312312312312312</span>
-                </div>
+            <div class="col-12 d-flex justify-content-left fle align-items-center rounded p-2 shadow p-3 mb-5 bg-dark rounded">
+                <img src="./src/ether.png" alt="Ether" width="50px" class="mx-1">
+                <h1 class="pl-2 mx-1">DApp</h1>
+                <span class="mx-5 text-info">Votaciones en la Blockchain</span>
+                <span class="h5">Wallet: </span>
+                <span id="cuenta" class="h5 mx-2 text-warning">(undefined)</span>
             </div>
-            <div class="col-9 bg-dark">
-
+            <div class="col-12">
+                <div id="votaciones"></div>
             </div>
         </div>
+
     </div>
+
+    <script src="/libs/@truffle/contract/dist/truffle-contract.min.js"></script>
+    <script src="./app.js"></script>
+    <script src="./ui.js"></script>
 </body>
 
 </html>

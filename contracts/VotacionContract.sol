@@ -4,6 +4,7 @@ pragma solidity ^0.8.6;
 contract VotacionContract{
 
     uint256 public contadorParticipantes = 0;
+    uint256 public contadorDirecciones = 0;
 
     //Creo un puestos por defecto
     constructor(){
@@ -24,7 +25,8 @@ contract VotacionContract{
     event PersonasVotadas(
         uint id, 
         uint256 numeroVotos, 
-        string nombre
+        string nombre,
+        address addressFrom
     );
 
     //Estructura de mi votacion
@@ -52,14 +54,14 @@ contract VotacionContract{
     //FUNCION PARA VOTACION
     function votacionPersona(uint256 id) public{
         PersonasStruct memory personaMod = personas[id];
-
+        
         personaMod.votos = personaMod.votos + 1;
 
         personas[id] = personaMod;
 
-        emit PersonasVotadas(id, personaMod.votos, personaMod.nombre);
+
+        emit PersonasVotadas(id, personaMod.votos, personaMod.nombre, msg.sender);
 
     }
-
 
 }
