@@ -13,6 +13,7 @@ contract VotacionContract{
         crearPuesto("Mark Zuckerberg", "Un peligro para la informacion privada, creador de FaceBook");
     }
 
+    //EVENTOS
     event PersonasCreadas(
         uint256 id,
         string nombre,
@@ -27,6 +28,23 @@ contract VotacionContract{
         string nombre,
         address addressFrom
     );
+    //........
+
+    uint256 public contadorAddress = 0;
+
+    struct AddressStruct{
+        address addressAccount;
+    }
+
+    mapping (uint256 => AddressStruct) public addressAll;
+
+    //Estructura votos
+    struct VotacionStruct{
+        address addressAccount;
+        bool voto;
+    }
+
+    mapping (address => VotacionStruct) public votosAddress;
 
     //Estructura de mi votacion
     struct PersonasStruct{
@@ -61,6 +79,20 @@ contract VotacionContract{
 
         emit PersonasVotadas(id, personaMod.votos, personaMod.nombre, msg.sender);
 
+        addAddress(msg.sender);
+
+    }
+
+    //FUNCION PARA GUARDAR DIRECCIONES CADA VEZ QUE SE CONECTAN
+    function addAddress(address direccion) public{
+        votosAddress[direccion] = VotacionStruct(direccion, true);
+
+        recoverAllAddress(direccion);
+    }
+
+    function recoverAllAddress( address direccion) public{
+        contadorAddress++;
+        addressAll[contadorAddress]= AddressStruct(direccion);
     }
 
 }

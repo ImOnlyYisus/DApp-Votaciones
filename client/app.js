@@ -8,6 +8,7 @@ App = {
         await App.loadContracts();
         App.render();
         await App.renderPersonas();
+        App.renderLogs();
 
 
     },
@@ -70,30 +71,32 @@ App = {
             personaFechaCreacion = personas[3];
             personaVotos = personas[4];
 
-            let taskElement = `
-            <div class="card bg-dark mb-2">
-                <div class="card-header d-flex justify-content-between align-items-center">
-                    <span class="h2">${personaNombre}</span>
-                    <span class="text-info h6">[${personaVotos} / 10 Votos]</span> 
-                    <div>
-                        <input type="button" class="btn bg-success" data-id="${personaId}" value="Votar" onclick="App.votarPersona(this)">
+            let contenidoVotos = `
+            <div class="col-6">
+                <div class="card bg-dark mb-2 shadow">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <span class="h2">${personaNombre}</span>
+                        <span class="text-info h6">[${personaVotos} / 10 Votos]</span> 
+                        <div>
+                            <input type="button" class="btn bg-success" data-id="${personaId}" value="Votar" onclick="App.votarPersona(this)">
+                        </div>
                     </div>
-                </div>
-                <div class="card-body">
-                    <span>Descripcion:</span>
-                    <span>${personaDescripcion}</span>
-                    <p class="text-muted">${new Date(personaFechaCreacion * 1000).toLocaleString()}</p>
-                </div>
-                <div class="progress">
-                    <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="10" style="width:${personaVotos*100/10}%">
-                        <span class="sr-only">${Math.round((personaVotos*100/10))}% Votos</span>
+                    <div class="card-body">
+                        <span>Descripcion:</span>
+                        <span>${personaDescripcion}</span>
+                        <p class="text-muted">${new Date(personaFechaCreacion * 1000).toLocaleString()}</p>
                     </div>
-                 </div>
-                
+                    <div class="progress">
+                        <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="10" style="width:${personaVotos*100/10}%">
+                            <span class="sr-only">${Math.round((personaVotos*100/10))}% Votos</span>
+                        </div>
+                    </div>
+                    
+                </div>
             </div>
             `;
 
-            html += taskElement;
+            html += contenidoVotos;
 
         }
 
@@ -102,9 +105,42 @@ App = {
 
     votarPersona: async(element) => {
         personaId = element.dataset.id;
+        showVote = await App.votacionesContract.votosAddress(App.cuentaMetaMask);
 
-        votarPersona = await App.votacionesContract.votacionPersona(personaId, { from: App.cuentaMetaMask });
-        window.location.reload();
+
+        if (!showVote.voto) {
+            votarPersona = await App.votacionesContract.votacionPersona(personaId, { from: App.cuentaMetaMask });
+
+            window.location.reload();
+
+        } else {
+            alert("Usted ya ha votado");
+        }
+
+
+    },
+
+    renderLogs: async() => {
+        contadorAddress = await App.votacionesContract.contadorAddress();
+        contadorAddressNumber = contadorAddress.toNumber();
+
+        let html = '';
+
+        for (let i = 1; i <= contadorAddressNumber; i++) {
+            address = await App.votacionesContract.addressAll(i);
+
+            let contenidoLogs = `
+                <div class="col-12 my-1 bg-dark rounded shadow">
+                        <span class="text-success text-align-center">Voto confirmado!</span>
+                        <span class="text-warning text-align-center">${address}</span>
+                </div>
+            `;
+
+            html += contenidoLogs;
+        }
+
+        document.querySelector("#logs").innerHTML = html;
+
     }
 }
 
